@@ -34,3 +34,21 @@ export async function syncUser() {
     console.log("Error in syncUser", error);
   }
 }
+
+// เป็นฟังก์ชันที่ใช้ในการดึงข้อมูลผู้ใช้จากฐานข้อมูล โดยใช้ clerkId เป็นตัวระบุ
+export async function getUserByClerkId(clerkId: string) {
+  return prisma.user.findUnique({
+    where: {
+      clerkId,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          following: true,
+          posts: true,
+        },
+      },
+    },
+  });
+}
